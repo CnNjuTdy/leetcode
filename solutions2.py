@@ -276,5 +276,127 @@ def question17(digits):
     return result
 
 
+"""
+18. 四数之和
+
+给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
+
+注意：
+答案中不可以包含重复的四元组。
+
+示例：
+给定数组 nums = [1, 0, -1, 0, -2, 2]，和 target = 0。
+满足要求的四元组集合为：
+[
+  [-1,  0, 0, 1],
+  [-2, -1, 1, 2],
+  [-2,  0, 0, 2]
+]
+"""
+
+
+def question18(nums, target):
+    length = len(nums)
+    result = []
+    if length < 4:
+        return []
+    nums.sort()
+    for m in range(length - 3):
+        for n in range(m + 1, length - 2):
+            new_target = target - nums[m] - nums[n]
+            i, j = n + 1, length - 1
+            while i < j:
+                current = nums[i] + nums[j]
+                if current < new_target:
+                    i += 1
+                elif current > new_target:
+                    j -= 1
+                else:
+                    temp = [nums[m], nums[n], nums[i], nums[j]]
+                    if temp not in result:
+                        result.append(temp)
+                    i += 1
+                    j -= 1
+    return result
+
+
+"""
+19. 删除链表的倒数第N个节点
+
+给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+
+示例：
+给定一个链表: 1->2->3->4->5, 和 n = 2.
+当删除了倒数第二个节点后，链表变为 1->2->3->5.
+
+说明：
+给定的 n 保证是有效的。
+
+进阶：
+你能尝试使用一趟扫描实现吗？
+"""
+
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+    def __str__(self):
+        node = self
+        result = ''
+        while node is not None:
+            result += str(node.val) + '->'
+            node = node.next
+        return result[:-2]
+
+
+def question19(head, n):
+    # if not head.next:
+    #     return None
+    current1, current2 = head, head
+    last = ListNode(-1)
+    last.next = head
+    head1 = last
+    for i in range(n):
+        current2 = current2.next
+    while current2:
+        last = last.next
+        current1 = current1.next
+        current2 = current2.next
+    last.next = current1.next
+    return head1.next
+
+
+"""
+20. 有效的括号
+
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+
+有效字符串需满足：
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+注意空字符串可被认为是有效字符串。
+"""
+
+
+def question20(s):
+    map = {
+        '{': '}',
+        '[': ']',
+        '(': ')'
+    }
+    i, stack = 0, [None]
+    while i < len(s):
+        if s[i] in map:
+            stack.append(s[i])
+        else:
+            t = stack.pop()
+            if not t or not map[t] == s[i]:
+                return False
+        i += 1
+    return len(stack) == 1
+
+
 if __name__ == '__main__':
-    print(question17('23'))
+    print(question20('[(])'))
