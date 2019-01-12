@@ -198,10 +198,152 @@ def question25(head, k):
     return end
 
 
+"""
+26. 删除排序数组中的重复项
+
+给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+
+示例 1:
+给定数组 nums = [1,1,2], 
+函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。 
+你不需要考虑数组中超出新长度后面的元素。
+"""
+
+
+def question26(nums):
+    last, result, index = None, 0, 0
+    while index < len(nums):
+        if not nums[index] == last:
+            result += 1
+            last = nums[index]
+            index += 1
+        else:
+            nums.__delitem__(index)
+    return result
+
+
+"""
+27. 移除元素
+
+给定一个数组 nums 和一个值 val，你需要原地移除所有数值等于 val 的元素，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+
+示例 1:
+给定 nums = [3,2,2,3], val = 3,
+函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。
+你不需要考虑数组中超出新长度后面的元素。
+"""
+
+
+def question27(nums, val):
+    i, j = 0, 0
+    while j < len(nums):
+        if not nums[j] == val:
+            nums[i] = nums[j]
+            i += 1
+        j += 1
+    return i
+
+
+"""
+28. 实现strStr()
+
+实现 strStr() 函数。
+给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回-1。
+
+示例 1:
+输入: haystack = "hello", needle = "ll"
+输出: 2
+
+示例 2:
+输入: haystack = "aaaaa", needle = "bba"
+输出: -1
+
+说明:
+当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。
+对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
+"""
+
+
+def question28(haystack, needle):
+    length = len(needle)
+    for i in range(len(haystack) + 1 - length):
+        if haystack[i:i + length] == needle:
+            return i
+    return -1
+
+
+"""
+29. 两数相除
+
+给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+返回被除数 dividend 除以除数 divisor 得到的商。
+
+示例 1:
+输入: dividend = 10, divisor = 3
+输出: 3
+
+示例 2:
+输入: dividend = 7, divisor = -3
+输出: -2
+"""
+
+
+def question29(dividend, divisor):
+    def f(t1, t2):
+        if t1 < t2:
+            return 0
+        temp = t2
+        result = -1
+        while temp <= t1:
+            temp = temp << 1
+            result += 1
+        t1 = t1 - (temp >> 1)
+        return (1 << result) + f(t1, t2)
+
+    if dividend == 0:
+        return 0
+    flag = True
+    if dividend > 0 and divisor > 0:
+        pass
+    elif dividend > 0 and divisor < 0:
+        flag = False
+        divisor = -divisor
+    elif dividend < 0 and divisor > 0:
+        flag = False
+        dividend = -dividend
+    else:
+        divisor = -divisor
+        dividend = -dividend
+    result = f(dividend, divisor)
+    if flag and result > ((1 << 31) - 1):
+        return (1 << 31) - 1
+    if not flag and result > (1 << 31):
+        return (1 << 31) - 1
+    return result if flag else -result
+
+
+"""
+30. 与所有单词相关联的字串
+
+给定一个字符串 s 和一些长度相同的单词 words。在 s 中找出可以恰好串联 words 中所有单词的子串的起始位置。
+注意子串要与 words 中的单词完全匹配，中间不能有其他字符，但不需要考虑 words 中单词串联的顺序。
+
+示例 1:
+输入:
+  s = "barfoothefoobarman",
+  words = ["foo","bar"]
+输出: [0,9]
+解释: 从索引 0 和 9 开始的子串分别是 "barfoor" 和 "foobar" 。
+输出的顺序不重要, [9,0] 也是有效答案。
+"""
+
+
+def question30():
+    pass
+
+
 if __name__ == '__main__':
-    node1 = ListNode(1)
-    node1.next = ListNode(2)
-    node1.next.next = ListNode(3)
-    node1.next.next.next = ListNode(4)
-    node1.next.next.next.next = ListNode(5)
-    print(question25(node1, 3))
+    print(question29(-2147483648, -1))
