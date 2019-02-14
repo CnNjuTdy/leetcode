@@ -336,14 +336,48 @@ def question29(dividend, divisor):
   s = "barfoothefoobarman",
   words = ["foo","bar"]
 输出: [0,9]
-解释: 从索引 0 和 9 开始的子串分别是 "barfoor" 和 "foobar" 。
+解释: 从索引 0 和 9 开始的子串分别是 "barfoo" 和 "foobar" 。
 输出的顺序不重要, [9,0] 也是有效答案。
 """
 
 
-def question30():
-    pass
+def question30(s, words):
+    def set_true(words, all, word):
+        for i in range(len(words)):
+            if words[i] == word and not all[i]:
+                all[i] = True
+                return True
+        return False
+
+    if not s or not words:
+        return []
+    n = len(words)
+    length = len(words[0])
+    if len(s) < n * length:
+        return []
+    indexes = []
+    for index in range(len(s) + 1 - length):
+        if s[index:index + length] in words:
+            indexes.append(index)
+    for index in indexes.copy():
+        for i in range(n):
+            if index + i * length not in indexes:
+                indexes.remove(index)
+                break
+    result = []
+    for index in indexes:
+        count, all = 0, [False] * n
+        for i in range(n):
+            word = s[index + i * length:index + (i + 1) * length]
+            if not set_true(words, all, word):
+                break
+            else:
+                count += 1
+            if count == n:
+                result.append(index)
+
+    return result
 
 
 if __name__ == '__main__':
-    print(question29(-2147483648, -1))
+    pass
