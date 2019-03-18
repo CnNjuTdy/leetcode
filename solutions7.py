@@ -261,7 +261,7 @@ def question68(words, maxWidth):
         this_line = [words[i]]
         this_min_length = len(words[i])
         j = i + 1
-        while this_min_length < maxWidth:
+        while this_min_length <= maxWidth:
             if j == len(words):
                 j += 1
                 this_line.append('')
@@ -331,4 +331,6 @@ def question70(n):
 
 if __name__ == '__main__':
     # node1.next.next = ListNode(2)
-    print(question70(2))
+    print(question68(
+        ["Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a", "computer.", "Art",
+         "is", "everything", "else", "we", "do"], 20))
