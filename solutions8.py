@@ -248,7 +248,7 @@ def question76(s, t):
 
 def question77(n, k):
     import itertools
-    return list(itertools.combinations(range(n + 1), k))
+    return list(itertools.combinations(range(1, n + 1), k))
 
 
 """
@@ -273,10 +273,96 @@ def question77(n, k):
 """
 
 
-def question78():
+def question78(nums):
+    def f(l, index, result):
+        if index == len(nums):
+            temp = []
+            for i in range(len(nums)):
+                if l[i]:
+                    temp.append(nums[i])
+            result.append(temp)
+        else:
+            l[index] = 1
+            f(l, index + 1, result)
+            l[index] = 0
+            f(l, index + 1, result)
 
-    pass
+    result = []
+    l = [0] * len(nums)
+    f(l, 0, result)
+    return result
+
+
+"""
+79. 单词搜索
+给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+示例:
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+
+给定 word = "ABCCED", 返回 true.
+给定 word = "SEE", 返回 true.
+给定 word = "ABCB", 返回 false.
+"""
+
+
+def question79(board, word):
+    def f(path, word):
+        if not word:
+            return True
+        c = word[0]
+        if not path:
+            for m in range(len(board)):
+                for n in range(len(board[0])):
+                    if board[m][n] == c:
+                        if f(path + [[m, n]], word[1:]):
+                            return True
+        else:
+            x, y = path[-1]
+            for m, n in [[x - 1, y], [x, y - 1], [x + 1, y], [x, y + 1]]:
+                if 0 <= m < len(board) and 0 <= n < len(board[0]) and [m, n] not in path and board[m][n] == c:
+                    if f(path + [[m, n]], word[1:]):
+                        return True
+        return False
+
+    path = []
+    return f(path, word)
+
+
+"""
+80. 删除排序数组中的重复项 II
+给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素最多出现两次，返回移除后数组的新长度。
+不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
+
+示例 1:
+给定 nums = [1,1,1,2,2,3],
+函数应返回新长度 length = 5, 并且原数组的前五个元素被修改为 1, 1, 2, 2, 3 。
+你不需要考虑数组中超出新长度后面的元素。
+
+示例 2:
+给定 nums = [0,0,1,1,1,1,2,3,3],
+函数应返回新长度 length = 7, 并且原数组的前五个元素被修改为 0, 0, 1, 1, 2, 3, 3 。
+你不需要考虑数组中超出新长度后面的元素。
+"""
+
+
+def question80(nums):
+    i = 0
+    for e in nums:
+        if i < 2 or e != nums[i - 2]:
+            nums[i] = e
+            i += 1
+    return i
 
 
 if __name__ == '__main__':
-    print(1)
+    print(question79([
+        ['A', 'B', 'C', 'E'],
+        ['S', 'F', 'C', 'S'],
+        ['A', 'D', 'E', 'E']
+    ], 'ABCCED'))
