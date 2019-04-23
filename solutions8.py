@@ -197,6 +197,7 @@ def question75(nums):
 
 
 def question76(s, t):
+    res = []
     if not s or len(s) < len(t):
         return ''
     t_d = {}
@@ -226,7 +227,56 @@ def question76(s, t):
     return res
 
 
+"""
+77. 组合
+给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+
+示例:
+
+输入: n = 4, k = 2
+输出:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+"""
+
+
+def question77(n, k):
+    import itertools
+    return list(itertools.combinations(range(n + 1), k))
+
+
+"""
+78. 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+
+说明：解集不能包含重复的子集。
+
+示例:
+
+输入: nums = [1,2,3]
+输出:
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+"""
+
+
+def question78():
+
+    pass
+
+
 if __name__ == '__main__':
-    x = "cabwefgewcwaefgcf"
-    y = question76(x, "cae")
-    print(y)
+    print(1)
