@@ -103,13 +103,44 @@ def question82(head):
     return start.next
 
 
+"""
+83. 删除排序链表中的重复元素
+给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+
+示例 1:
+
+输入: 1->1->2
+输出: 1->2
+示例 2:
+
+输入: 1->1->2->3->3
+输出: 1->2->3
+"""
+
+
+def question83(head):
+    if not head:
+        return None
+    last = ListNode(head.val - 1)
+    last.next = head
+    root = last
+    current = head
+    while current:
+        if current.val == last.val:
+            last.next = current.next
+        else:
+            last = current
+        current = current.next
+    return root.next
+
+
 if __name__ == '__main__':
-    node = ListNode(2)
+    node = ListNode(1)
     node.next = ListNode(1)
-    # node.next.next = ListNode(1)
+    node.next.next = ListNode(2)
     # node.next.next.next = ListNode(3)
     # node.next.next.next.next = ListNode(4)
     # node.next.next.next.next.next = ListNode(4)
     # node.next.next.next.next.next.next = ListNode(5)
-    m = question82(node)
+    m = question83(node)
     print(m)
