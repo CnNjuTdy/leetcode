@@ -2,7 +2,6 @@
 # Time       : 2019/4/24 19:46
 # Author     : tangdaye
 # Description: leetcode 81-90
-
 """
 81. 搜索旋转排序数组II
 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
@@ -38,7 +37,8 @@ def question81(nums, target):
                 return True
             if nums[left] == nums[right]:
                 for i in range(left, right + 1):
-                    if nums[i] == target: return True
+                    if nums[i] == target:
+                        return True
                 return False
 
             if nums[mid] >= nums[left]:  # 左边是有序的
@@ -85,7 +85,7 @@ def question82(head):
         return None
     stack = []
     current = head
-    last_same = float('inf')
+    last_same = float("inf")
     while current:
         if stack and stack[-1] == current.val:
             while stack and stack[-1] == current.val:
@@ -133,14 +133,83 @@ def question83(head):
         current = current.next
     return root.next
 
+"""
+84. 柱状图中最大的矩形
+给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+求在该柱状图中，能够勾勒出来的矩形的最大面积。
 
-if __name__ == '__main__':
-    node = ListNode(1)
-    node.next = ListNode(1)
-    node.next.next = ListNode(2)
-    # node.next.next.next = ListNode(3)
-    # node.next.next.next.next = ListNode(4)
-    # node.next.next.next.next.next = ListNode(4)
-    # node.next.next.next.next.next.next = ListNode(5)
-    m = question83(node)
-    print(m)
+示例:
+输入: [2,1,5,6,2,3]
+输出: 10
+"""
+def question84_1(heights):
+    def f(heights,index):
+        min_since_then,result = float('inf'),0
+        i = index
+        while i >= 0:
+            min_since_then = min_since_then if min_since_then<=heights[i] else heights[i]
+            result = result if result>= min_since_then*(index+1-i) else min_since_then*(index+1-i)
+            i-=1
+        return result
+    dp,i = 0,0
+    for i in range(len(heights)):
+        t = f(heights,i)
+        dp = t if t >= dp else dp
+    return dp
+
+
+    
+
+"""
+85. 最大矩形
+给定一个仅包含 0 和 1 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
+
+示例：
+输入:
+[
+  ["1","0","1","0","0"],
+  ["1","0","1","1","1"],
+  ["1","1","1","1","1"],
+  ["1","0","0","1","0"]
+]
+
+输出: 6
+"""
+
+
+def question85(matrix):
+    def f(martrix, p, q):
+        result, max_height = 0, []
+        j = 0
+        while q - j >= 0 and martrix[p][q - j] == "1":
+            i = 0
+            while p - i >= 0 and martrix[p - i][q - j] == "1":
+                i += 1
+            max_height.append(i)
+            j += 1
+        min_since_then = float('inf')
+        for i in range(1, len(max_height) + 1):
+            x = max_height[i - 1]
+            min_since_then = min_since_then if min_since_then <= x else x
+            result = (result
+                      if result >= min_since_then * i else min_since_then * i)
+        return result
+
+    if len(matrix) == 0 or len(matrix[0]) == 0:
+        return 0
+    m, n = len(matrix), len(matrix[0])
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if matrix[i - 1][j - 1] == "1":
+                dp[i][j] = max(f(matrix, i - 1, j - 1), dp[i - 1][j],
+                               dp[i][j - 1])
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+    return dp[-1][-1]
+
+
+if __name__ == "__main__":
+    # question85([['1','1','1','1'],['1','1','1','1'],['0','1','1','1']])
+    x = question84([2,1,5,6,2,3])
+    print(x)
